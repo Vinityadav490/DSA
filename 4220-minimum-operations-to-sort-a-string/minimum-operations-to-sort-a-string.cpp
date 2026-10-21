@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int minOperations(string s) {
+        if(is_sorted(s.begin(),s.end())) return 0;
+        if(s.size()==2) return -1;
+        char min_char=*min_element(begin(s),end(s));
+        char max_char=*max_element(begin(s),end(s));
+        if(s[0]==min_char||s[s.size()-1]==max_char) return 1;
+        char min_mid=*min_element(begin(s)+1,end(s)-1);
+        char max_mid=*max_element(begin(s)+1,end(s)-1);
+        if(s[0]>max_mid&&s[s.size()-1]<min_mid) return 3;
+        return 2;
+    }
+};
