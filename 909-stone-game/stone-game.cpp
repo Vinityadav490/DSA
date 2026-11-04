@@ -1,25 +1,25 @@
 class Solution {
-public:
-    int solve(vector<int>& piles, int i, int j,
-              vector<vector<int>>& dp) {
+private:
+    bool helper(vector<int>& piles, int left, int right, int asum, int bsum, bool isA){
+        if (left>=right){
+            return asum>bsum;
+        }
 
-        if(i > j) return 0;
+        bool takeLeft = false, takeRight = false;
 
-        if(dp[i][j] != -1)
-            return dp[i][j];
+        if (isA){
+            takeLeft = helper(piles, left+1, right, asum+piles[left], bsum, false);
+            takeRight = helper(piles, left, right-1, asum+piles[right], bsum, false);
+        }else{
+            takeLeft = helper(piles, left+1, right, asum, bsum+piles[left], true);
+            takeRight = helper(piles, left, right-1, asum, bsum+piles[right], true);
+        }
 
-        int left = piles[i] - solve(piles, i+1, j, dp);
-
-        int right = piles[j] - solve(piles, i, j-1, dp);
-
-        return dp[i][j] = max(left, right);
+        return takeLeft || takeRight;
     }
-
+public:
     bool stoneGame(vector<int>& piles) {
-        int n = piles.size();
-
-        vector<vector<int>> dp(n, vector<int>(n, -1));
-
-        return solve(piles, 0, n-1, dp) > 0;
+        return true;
+        return helper(piles, 0, piles.size()-1, 0, 0, true);
     }
 };
